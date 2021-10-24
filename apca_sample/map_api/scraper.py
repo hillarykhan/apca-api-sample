@@ -14,11 +14,11 @@ APP_TOKEN = os.environ['APP_TOKEN']
 APP_USERNAME = os.environ['APP_USERNAME']
 APP_PASSWORD = os.environ['APP_PASSWORD']
 
-client = Socrata("data.edd.ca.gov", None)
-# client = Socrata("data.edd.ca.gov",
-#                  APP_TOKEN)
-                #  USERNAME=APP_USERNAME,
-                #  PASSWORD=APP_PASSWORD)
+# client = Socrata("data.edd.ca.gov", None)
+client = Socrata("data.edd.ca.gov",
+                 APP_TOKEN,
+                 username=APP_USERNAME,
+                 password=APP_PASSWORD)
 
 # First 2000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
