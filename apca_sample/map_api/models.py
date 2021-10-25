@@ -7,7 +7,7 @@ class Unemployment(models.Model):
     year = models.IntegerField()
     labor_force = models.IntegerField()
     value = models.PositiveIntegerField()
-    rate = models.DecimalField(max_digits=5, decimal_places=2)
+    rate = models.DecimalField(max_digits=4, decimal_places=1)
 
     def __str__(self):
         return self.county, self.year, self.rate

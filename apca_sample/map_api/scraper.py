@@ -1,3 +1,4 @@
+from numpy import str_
 import pandas as pd
 from sodapy import Socrata
 from pathlib import Path
@@ -52,6 +53,9 @@ results = client.get("r8rw-9pxx", where="status_preliminary_final='Final' AND mo
 
 # Convert to pandas DataFrame
 results_df = pd.DataFrame.from_records(results)
+results_df['unemployment_rate'] = results_df['unemployment_rate'].astype(float)
+results_df['unemployment_rate'] = results_df['unemployment_rate'] * 100
+results_df['unemployment_rate'] = results_df['unemployment_rate'].astype(str)
 
 
 print("results_df: ", results_df.head())
