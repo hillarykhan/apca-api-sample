@@ -49,7 +49,7 @@ client = Socrata("data.edd.ca.gov",
 
 # First 2000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
-results = client.get("r8rw-9pxx", where="status_preliminary_final='Final' AND month='December' AND year > 2000", order="year desc", limit=2000)
+results = client.get("r8rw-9pxx", where="status_preliminary_final='Final' AND month='December' AND year > 2000 AND seasonally_adjusted_y_n='N'", order="year desc", limit=2000)
 
 # Convert to pandas DataFrame
 results_df = pd.DataFrame.from_records(results)
