@@ -5,6 +5,8 @@ import json
 import geopandas as gpd
 import os
 import dotenv
+import sqlite3
+from sqlite3 import Error
 
 # Import geojson file with california counties
 ca_counties = json.load(open('./data/ca-county-boundaries.geojson', 'r'))
@@ -60,4 +62,41 @@ results_df['geoid'] = results_df['area_name'].map(geoid_dict)
 print("results_df with geoid: ", results_df.head())
 print("results_df shape with geoid: ", results_df.shape)
 
-# Iterate through the completed results_df and add to database table
+# Create a list of dictionaries to be added to the database unemployment table
+stats = []
+for index, row in results_df.iterrows():
+    stats.append({
+        "geoid": row['geoid'],
+        "county": row['area_name'],
+        "year": row['year'],
+        "labor_force": row['labor_force'],
+        "value": row['unemployment'],
+        "rate": row['unemployment_rate']
+    })
+
+print("stats list: ", stats[0:10])
+
+# Connect to sqlite db
+conn = None
+try:
+    conn = sqlite3.connect('../db.sqlite3')
+except Error as e:
+    print(e)
+
+# Insert data into unemployment table
+
+curs = conn.cursor()
+for stat in stats:
+    sql = f"""INSERT INTO unemployment (
+    geoid,
+    county,
+    year,
+    labor_force,
+    value,
+    rate) 
+    VALUES {json.dumps(tuple(stat.values()))};"""
+    curs.execute(sql)
+conn.commit()
+curs.close()
+conn.close()
+
