@@ -70,7 +70,7 @@ print("results_df shape with geoid: ", results_df.shape)
 stats = []
 for index, row in results_df.iterrows():
     stats.append({
-        "geoid": row['geoid'],
+        "geoid": "'" + row['geoid'] + "'",
         "county": "'" + row['area_name'] + "'",
         "year": row['year'],
         "labor_force": row['labor_force'],
