@@ -4,22 +4,26 @@ from rest_framework import status
 from .serializers import StatSerializer
 from .models import Unemployment
 
-lookup_field = "geoid"
+
 
 # Create your views here.
 @api_view(['GET'])
-def counties_stats(request):
-    stats = Unemployment.objects.all()
-    serializer = StatSerializer(stats, many=True)
-    return Response(serializer.data)
-
-
-@api_view(['GET'])
-def county_stats(request, geoid=None):
+def county_stats(request):
+    county = request.GET.get('county', '')
+    year = request.GET.get('year', 0)
     try:
-        county = Unemployment.objects.filter(geoid=geoid)
+        if county != "" and year != 0:
+            query = Unemployment.objects.filter(geoid=county).filter(year=year)
+        
+        elif county != "":
+            query = Unemployment.objects.filter(geoid=county)
+        elif year != 0:
+            query = Unemployment.objects.filter(year=year)
+        else:
+            query = Unemployment.objects.all()
+        
     except Unemployment.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     
-    serializer = StatSerializer(county, many=True)
+    serializer = StatSerializer(query, many=True)
     return Response(serializer.data)
