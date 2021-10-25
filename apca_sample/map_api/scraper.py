@@ -48,7 +48,7 @@ client = Socrata("data.edd.ca.gov",
 
 # First 2000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
-results = client.get("r8rw-9pxx", where="status_preliminary_final='Final' AND month='December'", order="year desc", limit=2000)
+results = client.get("r8rw-9pxx", where="status_preliminary_final='Final' AND month='December' AND year > 2000", order="year desc", limit=2000)
 
 # Convert to pandas DataFrame
 results_df = pd.DataFrame.from_records(results)
@@ -67,7 +67,7 @@ stats = []
 for index, row in results_df.iterrows():
     stats.append({
         "geoid": row['geoid'],
-        "county": row['area_name'],
+        "county": "'" + row['area_name'] + "'",
         "year": row['year'],
         "labor_force": row['labor_force'],
         "value": row['unemployment'],
@@ -87,14 +87,15 @@ except Error as e:
 
 curs = conn.cursor()
 for stat in stats:
-    sql = f"""INSERT INTO unemployment (
+    sql = f"""INSERT INTO map_api_unemployment (
     geoid,
     county,
     year,
     labor_force,
     value,
     rate) 
-    VALUES {json.dumps(tuple(stat.values()))};"""
+    VALUES  ({",".join(stat.values())});"""
+    print("sql: ", sql)
     curs.execute(sql)
 conn.commit()
 curs.close()
