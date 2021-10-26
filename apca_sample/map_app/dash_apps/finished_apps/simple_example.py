@@ -41,7 +41,7 @@ df = pd.merge(df, geo_df, left_on='fips', right_on='geoid')
 
 # APP LAYOUT STARTS
 app.layout = html.Div([
-    html.H1("Interactive Choropleth by Hillary Khan", style={'text-align': 'center'}),
+    html.H2("California Unemployment Rates by County", style={'text-align': 'left'}),
 
     dcc.Dropdown(id="slct_year",
     options=[
@@ -70,10 +70,11 @@ app.layout = html.Div([
     style={'width': "30%"}
     ),
 
-html.Div(id='output_container', children=[]),
-html.Br(),
+    html.Br(),
+    html.Br(),
+    html.Br(),
 
-dcc.Graph(id='my_unemp_map', figure={})
+    dcc.Graph(id='my_unemp_map', figure={})
 
 ])
 # APP LAYOUT ENDS
@@ -102,5 +103,6 @@ def update_graph(option_slctd):
         hover_name='name',
         hover_data=['unemp'])
     fig.update_geos(fitbounds='locations', visible=False)
+    fig.update_layout(height=600, margin={"r":0,"t":0,"l":0,"b":0})
     return fig
 # CALLBACK ENDS

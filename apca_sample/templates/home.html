@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
+{% block body %}
 {% load plotly_dash %}
 
-<H1> Home Page (from NOT mapp_app)!! </H1>
+<H1> Interactive Choropleth by Hillary Khan </H1>
 
     <div class="{% plotly_class name='SimpleExample' %} card" style="height: 100%; width: 100%">
-    {% plotly_app name="SimpleExample" ratio=0.65 %}
+    {% plotly_app name="SimpleExample" ratio=0.85 %}
     </div>
 
 {% endblock %}
