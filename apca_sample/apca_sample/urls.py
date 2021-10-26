@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('map_app.urls')),
     path('', include('map_api.urls')),
+    path('django_plotly_dash/', include('django_plotly_dash.urls')),
 
 ]

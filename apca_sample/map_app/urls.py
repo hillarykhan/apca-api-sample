@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import Choropleth
+from .views import Home
+from .dash_apps.finished_apps import simple_example
 
 urlpatterns = [
-    path('', Choropleth, name='Unemployment'),
+    path('', Home, name='home'),
 ]
